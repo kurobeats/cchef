@@ -1,0 +1,62 @@
+#!/bin/bash 
+
+INSTALL_LOC="$HOME/.local/share/cyberchef"
+CONF_LOC="$HOME/.config/cyberchef"
+RELEASE=$(curl -s https://api.github.com/repos/gchq/CyberChef/releases/latest | grep tag_name | cut -d '"' -f 4)
+ZIP=https://github.com/gchq/CyberChef/releases/download/$RELEASE/CyberChef_$RELEASE.zip
+
+function setup {
+    echo "[+] Checking for previous installation directoy"
+    if [[ ! -d $INSTALL_LOC ]]
+    then
+        echo "[+] Directory not found, creating."
+        mkdir -p $INSTALL_LOC
+    fi
+    echo "[+] Checking for previous configuration directoy"
+    if [[ ! -d $CONF_LOC ]]
+    then
+        echo "[+] Directory not found, creating."
+        mkdir -p $CONF_LOC
+    fi
+}
+
+function version_check {
+    if [[ -f $CONF_LOC/version.txt ]]
+    then
+        if [[ $(cat $CONF_LOC/version.txt) == $RELEASE ]]
+        then
+            echo "[+] CyberChef is up-to-date at $RELEASE"
+        fi
+    fi
+}
+
+function update {
+    echo "[+] New version $RELEASE located"
+
+    echo "[+] Downloading CyberChef_$RELEASE.zip from Github"
+    curl -Ls $ZIP --output $INSTALL_LOC/CyberChef_$RELEASE.zip
+
+    echo "[+] Extracting ZIP to $INSTALL_LOC"
+    unzip -q $INSTALL_LOC/CyberChef_$RELEASE.zip -d $INSTALL_LOC
+
+    echo "[+] Cleaning up..."
+    rm $INSTALL_LOC/CyberChef_$RELEASE.zip
+    mv $INSTALL_LOC/CyberChef_$RELEASE.html $INSTALL_LOC/cyberchef.html
+
+    echo $RELEASE > $CONF_LOC/version.txt
+    echo "[+] Upgrade Complete."
+}
+
+function launch {
+    echo "[+] Let's start cooking!™"
+    xdg-open $INSTALL_LOC/cyberchef.html
+}
+
+function main {
+    setup
+    version_check
+    update
+    launch
+}
+
+main
