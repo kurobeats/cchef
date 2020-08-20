@@ -6,16 +6,14 @@ RELEASE=$(curl -s https://api.github.com/repos/gchq/CyberChef/releases/latest | 
 ZIP=https://github.com/gchq/CyberChef/releases/download/$RELEASE/CyberChef_$RELEASE.zip
 
 function setup {
-    echo "[+] Checking for previous installation directoy"
     if [[ ! -d $INSTALL_LOC ]]
     then
-        echo "[+] Directory not found, creating."
+        echo "[+] Install directory not found, creating."
         mkdir -p $INSTALL_LOC
     fi
-    echo "[+] Checking for previous configuration directoy"
     if [[ ! -d $CONF_LOC ]]
     then
-        echo "[+] Directory not found, creating."
+        echo "[+] Configuration directory not found, creating."
         mkdir -p $CONF_LOC
     fi
 }
@@ -26,7 +24,9 @@ function version_check {
         if [[ $(cat $CONF_LOC/version.txt) == $RELEASE ]]
         then
             echo "[+] CyberChef is up-to-date at $RELEASE"
-        fi
+        else
+            echo "[+] CyberChef is updating to version $RELEASE"
+            update
     fi
 }
 
@@ -55,7 +55,6 @@ function launch {
 function main {
     setup
     version_check
-    update
     launch
 }
 
