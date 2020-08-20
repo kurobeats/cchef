@@ -21,12 +21,11 @@ function setup {
 function version_check {
     if [[ -f $CONF_LOC/version.txt ]]
     then
-        if [[ $(cat $CONF_LOC/version.txt) == $RELEASE ]]
+        if [[ $(cat $CONF_LOC/version.txt) != $RELEASE ]]
         then
-            echo "[+] CyberChef is up-to-date at $RELEASE"
-        else
             echo "[+] CyberChef is updating to version $RELEASE"
             update
+        fi
     fi
 }
 
