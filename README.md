@@ -4,7 +4,7 @@ There's not much to this thing, it just setups up CyberChef, keeps a record of t
 ## Requirements
 * unzip
 * curl
-* Linux
+* Linux or MacOS
 * Web browser
 * Computer
 
