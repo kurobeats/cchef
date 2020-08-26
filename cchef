@@ -26,6 +26,9 @@ function version_check {
             echo "[+] CyberChef is updating to version $RELEASE"
             update
         fi
+    # Update anyways because the version file doesn't exist.
+    else
+        update
     fi
 }
 
