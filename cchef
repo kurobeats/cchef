@@ -3,6 +3,11 @@
 INSTALL_LOC="$HOME/.local/share/cyberchef"
 CONF_LOC="$HOME/.config/cyberchef"
 RELEASE=$(curl -s https://api.github.com/repos/gchq/CyberChef/releases/latest | grep tag_name | cut -d '"' -f 4)
+if [[ -z "$RELEASE" ]]
+then
+   echo "Couldn't pull latest version. :["
+fi
+
 ZIP=https://github.com/gchq/CyberChef/releases/download/$RELEASE/CyberChef_$RELEASE.zip
 
 function setup {
@@ -50,8 +55,13 @@ function update {
 }
 
 function launch {
-    echo "[+] Let's start cooking!™"
-    xdg-open $INSTALL_LOC/cyberchef.html
+    if [[ -f $INSTALL_LOC/cyberchef.html ]]
+    then
+        echo "[+] Let's start cooking!™"
+        xdg-open $INSTALL_LOC/cyberchef.html
+    else
+        echo "CyberChef isn't installed."
+    fi
 }
 
 function main {
