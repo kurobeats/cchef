@@ -58,7 +58,15 @@ function launch {
     if [[ -f $INSTALL_LOC/cyberchef.html ]]
     then
         echo "[+] Let's start cooking!™"
-        xdg-open $INSTALL_LOC/cyberchef.html
+        if [[ "$OSTYPE" == "linux-gnu"* ]]
+        then
+            # it's a Linux user!
+            xdg-open $INSTALL_LOC/cyberchef.html
+        elif [[ "$OSTYPE" == "darwin"* ]]
+        then
+            # we got us a Mac
+            open $INSTALL_LOC/cyberchef.html
+        fi
     else
         echo "CyberChef isn't installed."
     fi
